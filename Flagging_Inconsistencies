@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #7F7FD5, #86A8E7, #91EAE4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    color: #4047CF;
+}
+
+.container {
+    background-color: #fff;
+    padding: 40px 50px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    width: 350px;
+    text-align: center;
+}
+
+h1 {
+    color: #4047CF;
+    margin-bottom: 15px;
+}
+
+p {
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.discrepancies {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+.discrepancies li {
+    background-color: #FCE4EC;
+    color: #D9534F;
+    padding: 8px;
+    border-radius: 8px;
+    margin: 5px 0;
+}
+
+.button {
+    background-color: #4047CF;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: #357ABD;
+}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flag Inconsistencies - TimeSync</title>
+    <link rel="stylesheet" href="flag_styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Flag Inconsistencies</h1>
+        <p>The system has detected discrepancies in recorded hours, such as:</p>
+        <ul class="discrepancies">
+            <button class="button">Missing TimeStamps</button>
+            <button class="button">Exsessive Hours Worked</button>
+        </ul>
+       <button class="button">Alert Admin For Review</button>
+    </div>
+</body>
+</html>
