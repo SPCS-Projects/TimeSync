@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Shifts</title>
+    <title>Edit/Delete Shifts</title>
     <style>
-        /* Copy styles from enter-id.html */
         body {
             font-family: 'Arial', sans-serif;
             background: linear-gradient(135deg, #7F7FD5, #86A8E7, #91EAE4);
@@ -19,16 +18,19 @@
         }
         .container {
             background-color: #fff;
-            padding: 30px 40px;
+            padding: 40px 60px;
             border-radius: 12px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            width: 350px;
-            text-align: center;
+            width: 500px; /* Increased width */
+            margin: auto;
             animation: slideIn 0.5s ease-in-out;
         }
         @keyframes slideIn {
             from { opacity: 0; transform: translateY(-50px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+        form {
+            margin-bottom: 20px;
         }
         h1 {
             color: #4047CF;
@@ -54,17 +56,47 @@
             transform: scale(1.05);
         }
         button:active { transform: scale(0.98); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Manage Shifts</h1>
-        <form action="/add_shift" method="get" style="margin-bottom: 15px;">
-            <button type="submit">Add Shift</button>
-        </form>
-        <form action="/edit_delete_shifts" method="get">
-            <button type="submit">Edit/Delete Shifts</button>
-        </form>
-    </div>
+<div class="container">
+    <h1>Edit/Delete Shifts</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Time</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for shift in shifts %}
+            <tr>
+                <td>{{ shift['id'] }}</td>
+                <td>{{ shift['name'] }}</td>
+                <td>{{ shift['time'] }}</td>
+                <td>
+                    <form action="/edit_shift/{{ shift['id'] }}" method="get" style="display:inline;">
+                        <button type="submit">Edit</button>
+                    </form>
+                    <form action="/delete_shift/{{ shift['id'] }}" method="post" style="display:inline;">
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 </body>
 </html>

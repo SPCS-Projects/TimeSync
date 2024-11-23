@@ -144,21 +144,104 @@ def add_employee():
         return redirect('/manage_employees')
     return render_template('add_employee.html')
 
-@app.route('/edit_employee', methods=['POST'])
-def edit_employee():
-    # Logic for editing an employee
-    pass
+@app.route('/edit_delete_employees')
+def edit_delete_employees():
+    conn = sqlite3.connect(database_loc)
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM Employees")
+    employees = [{'id': row[0], 'name': row[1], 'shift': row[2]} for row in cur.fetchall()]
+    return render_template('edit_delete_employees.html', employees=employees)
 
-@app.route('/delete_employee', methods=['POST'])
-def delete_employee():
-    # Logic for deleting an employee
-    pass
+@app.route('/edit_employee/<int:employee_id>', methods=['GET', 'POST'])
+def edit_employee(employee_id):
+    conn = sqlite3.connect(database_loc)
+    cur = conn.cursor()
 
-@app.route('/manage_shifts', methods=['POST'])
+    if request.method == 'GET':
+        # Fetch employee details
+        cur.execute("SELECT * FROM Employees WHERE id = ?", (employee_id,))
+        employee = cur.fetchone()
+        conn.close()
+        if not employee:
+            return render_template('error.html', message="Employee not found")
+        return render_template('edit_employee.html', employee={'id': employee[0], 'name': employee[1], 'shift': employee[2]})
+
+    # POST: Update employee details
+    name = request.form['name']
+    shift = request.form['shift']
+    cur.execute("UPDATE Employees SET name = ?, shift = ? WHERE id = ?", (name, shift, employee_id))
+    conn.commit()
+    conn.close()
+    return redirect('/edit_delete_employees')
+
+
+@app.route('/delete_employee/<int:employee_id>', methods=['POST'])
+def delete_employee(employee_id):
+    conn = sqlite3.connect(database_loc)
+    cur = conn.cursor()
+    cur.execute("DELETE FROM Employees WHERE id = ?", (employee_id,))
+    conn.commit()
+    conn.close()
+    return redirect('/edit_delete_employees')
+
+@app.route('/manage_shifts', methods=['GET', 'POST'])
 def manage_shifts():
     return render_template('manage_shifts.html')
 
-@app.route('/export_logs', methods=['POST'])
+@app.route('/add_shift', methods=['GET', 'POST'])
+def add_shift():
+    if request.method == 'POST':
+        start_time = request.form['start_time']
+        end_time = request.form['end_time']
+        conn = sqlite3.connect(database_loc)
+        cur = conn.cursor()
+        cur.execute("INSERT INTO Shifts (start_time, end_time) VALUES (?, ?)", (start_time, end_time))
+        conn.commit()
+        conn.close()
+        return redirect('/manage_shifts')
+    return render_template('add_shift.html')
+
+
+@app.route('/edit_delete_shifts')
+def edit_delete_shifts():
+    conn = sqlite3.connect(database_loc)
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM Shifts")
+    shifts = [{'id': row[0], 'name': row[1], 'time': row[2]} for row in cur.fetchall()]
+    return render_template('edit_delete_shifts.html', shifts=shifts)
+
+@app.route('/edit_shift/<int:shift_id>', methods=['GET', 'POST'])
+def edit_shift(shift_id):
+    conn = sqlite3.connect(database_loc)
+    cur = conn.cursor()
+
+    if request.method == 'GET':
+        cur.execute("SELECT * FROM Shifts WHERE id = ?", (shift_id,))
+        shift = cur.fetchone()
+        conn.close()
+        if not shift:
+            return render_template('error.html', message="Shift not found")
+        return render_template('edit_shift.html', shift={'id': shift[0], 'start_time': shift[1], 'end_time': shift[2]})
+
+    start_time = request.form['start_time']
+    end_time = request.form['end_time']
+    cur.execute("UPDATE Shifts SET start_time = ?, end_time = ? WHERE id = ?", (start_time, end_time, shift_id))
+    conn.commit()
+    conn.close()
+    return redirect('/edit_delete_shifts')
+
+
+@app.route('/delete_shift/<int:shift_id>', methods=['POST'])
+def delete_shift(shift_id):
+    conn = sqlite3.connect(database_loc)
+    cur = conn.cursor()
+    cur.execute("DELETE FROM Shifts WHERE id = ?", (shift_id,))
+    conn.commit()
+    conn.close()
+    return redirect('/edit_delete_shifts')
+
+
+@app.route('/export_logs', methods=['GET', 'POST'])
 def export_logs():
     return render_template('export_logs.html')
 
@@ -167,6 +250,8 @@ def export_logs():
 # Export Logs
 @app.route('/generate_csv', methods=['POST'])
 def generate_csv():
+    conn = sqlite3.connect(database_loc)
+    cur = conn.cursor()
     start_date = request.form['start_date']
     end_date = request.form['end_date']
     cur.execute("SELECT * FROM TimeLog WHERE date BETWEEN ? AND ?", (start_date, end_date))
@@ -175,7 +260,7 @@ def generate_csv():
     file_path = "timelog_export.csv"
     with open(file_path, 'w', newline='') as csvfile:
         csvwriter = csv.writer(csvfile)
-        csvwriter.writerow(["EmployeeID", "Name", "CheckIn", "CheckOut", "Date", "Absent", "Incomplete"])
+        csvwriter.writerow(["EntryID", "EmployeeID", "Name", "CheckIn", "CheckOut", "Date", "Absent", "Incomplete"])
         csvwriter.writerows(rows)
 
     return send_file(file_path, as_attachment=True)

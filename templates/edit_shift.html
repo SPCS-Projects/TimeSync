@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Shift</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #7F7FD5, #86A8E7, #91EAE4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: #333;
+        }
+        .container {
+            background-color: #fff;
+            padding: 40px 50px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: left;
+        }
+        h1 {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #4047CF;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #555;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4047CF;
+            color: white;
+            font-size: 1rem;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #556EE4;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Edit Shift</h1>
+        <form action="/edit_shift/{{ shift['id'] }}" method="post">
+            <label for="start_time">Start Time:</label>
+            <input type="time" id="start_time" name="start_time" value="{{ shift['start_time'] }}" required>
+
+            <label for="end_time">End Time:</label>
+            <input type="time" id="end_time" name="end_time" value="{{ shift['end_time'] }}" required>
+
+            <button type="submit">Save Changes</button>
+        </form>
+    </div>
+</body>
+</html>
