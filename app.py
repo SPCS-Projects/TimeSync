@@ -117,7 +117,7 @@ def admin_login():
     cursor.execute('SELECT password FROM Admin WHERE username = ?', (username,))
     result = cursor.fetchone()
     conn.close()
-    print(result, " - ", result[0], " - ", hashed_password)
+    # print(result, " - ", result[0], " - ", hashed_password)
     if result and result[0] == hashed_password:
         return redirect(url_for('admin_dashboard'))
     else:
