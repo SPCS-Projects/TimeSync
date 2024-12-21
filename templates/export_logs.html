@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+    <style>
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #4047CF;
+            padding: 10px 20px;
+            color: white;
+        }
+        nav a, nav button {
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            margin: 0 10px;
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+        nav .logo {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        nav .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        nav .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: white;
+            color: #333;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            min-width: 160px;
+            z-index: 1;
+            border-radius: 8px;
+        }
+        nav .dropdown-content a {
+            color: #4047CF;
+            padding: 10px 15px;
+            text-decoration: none;
+            display: block;
+            border-bottom: 1px solid #f1f1f1;
+        }
+        nav .dropdown-content a:last-child {
+            border-bottom: none;
+        }
+        nav .dropdown:hover .dropdown-content {
+            display: block;
+        }
+    </style>
+    <nav>
+        <a href="/" class="logo">Home</a>
+        <div>
+            <div class="dropdown">
+                <button>Employees</button>
+                <div class="dropdown-content">
+                    <a href="/add_employee">Add Employee</a>
+                    <a href="/edit_delete_employees">Edit/Delete Employees</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <button>Shifts</button>
+                <div class="dropdown-content">
+                    <a href="/add_shift">Add Shift</a>
+                    <a href="/edit_delete_shifts">Edit/Delete Shifts</a>
+                </div>
+            </div>
+            <a href="/export_logs">Export</a>
+        </div>
+    </nav>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Export Logs</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #7F7FD5, #86A8E7, #91EAE4);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            color: #333;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            text-align: center;
+            animation: slideIn 0.5s ease-in-out;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        h1 {
+            color: #4047CF;
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+        button {
+            background-color: #4047CF;
+            color: #fff;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s ease, background-color 0.3s ease;
+            margin-top: 20px;
+            display: block;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #556EE4;
+            transform: scale(1.05);
+        }
+        button:active { transform: scale(0.98); }
+        label {
+            font-size: 1rem;
+            color: #4047CF;
+            display: block;
+            margin-bottom: 10px;
+        }
+        input[type="date"] {
+            width: 100%;
+            padding: 12px;
+            font-size: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Export Logs</h1>
+    <form action="/generate_csv" method="post">
+        <label for="start_date">Start Date</label>
+        <input type="date" id="start_date" name="start_date" required>
+        <label for="end_date">End Date</label>
+        <input type="date" id="end_date" name="end_date" required>
+        <button type="submit">Export</button>
+    </form>
+</div>
+</body>
+</html>
